@@ -1,21 +1,23 @@
-{ pkgs ? import <nixpkgs> { system = builtins.currentSystem; }
-  , appimageTools ? pkgs.appimageTools
-  , lib ? pkgs.lib
-  , fetchurl ? pkgs.fetchurl
+{
+  pkgs ? import <nixpkgs> { system = builtins.currentSystem; },
+  appimageTools ? pkgs.appimageTools,
+  lib ? pkgs.lib,
+  fetchurl ? pkgs.fetchurl,
 }:
-
 appimageTools.wrapType2 rec {
   pname = "Cider";
-  version = "2.6.0";
+  version = "3.0.2";
 
   src = fetchurl {
-    url = "file://${./cider-linux-x64.AppImage}";
-    sha256 = "abdba55d885ae4f4996d867fa313af1af2b95c69f44e50063329a3bb97d7c265";
+    url = "file://${./cider-v3.0.2-linux-x64.AppImage}";
+    sha256 = "sha256-XVBhMgSNJAYTRpx5GGroteeOx0APIzuHCbf+kINT2eU=";
   };
 
   extraInstallCommands =
-    let contents = appimageTools.extract { inherit pname version src; };
-    in ''
+    let
+      contents = appimageTools.extract { inherit pname version src; };
+    in
+    ''
 
       install -m 444 -D ${contents}/${pname}.desktop -t $out/share/applications
       substituteInPlace $out/share/applications/${pname}.desktop \
